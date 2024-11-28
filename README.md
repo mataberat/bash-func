@@ -1,14 +1,6 @@
 # Bash-func
 
-A collection of powerful shell functions to streamline your Kubernetes workflow.
-
-## Features
-
-- Force delete pods with simple commands
-- Clean up stuck namespaces in Terminating state
-- Quick access to Alpine Linux debug pods
-- Smart shell detection for installation
-- Named parameter support for better usability
+A collection of powerful shell functions and aliases that I used personally in my Workspaces.
 
 ## Quick Install
 
