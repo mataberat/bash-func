@@ -9,19 +9,71 @@ function k() { kubectl "$@"; }
 function kc() { kubectx "$@"; }
 function kn() { kubens "$@"; }
 
+function dotenv-compare() {
+    if [ "$#" -eq 0 ]; then
+        echo "Compares two .env files and shows which environment variables are missing in each file"
+        echo ""
+        echo "Usage:"
+        echo "  dotenv-compare <env_file_1> <env_file_2>"
+        echo ""
+        echo "Examples:"
+        echo "  dotenv-compare .env.development .env.production"
+        echo "  dotenv-compare .env.local .env.example"
+        return 0
+    fi
+
+    if [ "$#" -ne 2 ]; then
+        echo "Usage: dotenv-compare <env_file_1> <env_file_2>"
+        return 1
+    fi
+
+    local ENV_FILE_1="$1"
+    local ENV_FILE_2="$2"
+
+    if [ ! -f "$ENV_FILE_1" ]; then
+        echo "File $ENV_FILE_1 not found!"
+        return 1
+    fi
+
+    if [ ! -f "$ENV_FILE_2" ]; then
+        echo "File $ENV_FILE_2 not found!"
+        return 1
+    fi
+
+    local keys_file_1
+    local keys_file_2
+    local missing_in_file_2
+    local missing_in_file_1
+
+    keys_file_1=$(awk -F '=' '{print $1}' "$ENV_FILE_1" | sort)
+    keys_file_2=$(awk -F '=' '{print $1}' "$ENV_FILE_2" | sort)
+
+    missing_in_file_2=$(comm -23 <(echo "$keys_file_1") <(echo "$keys_file_2"))
+    missing_in_file_1=$(comm -13 <(echo "$keys_file_1") <(echo "$keys_file_2"))
+
+    echo "Keys missing in $ENV_FILE_2:"
+    echo "$missing_in_file_2"
+    echo ""
+    echo "Keys missing in $ENV_FILE_1:"
+    echo "$missing_in_file_1"
+}
+
 # Git helper functions
-function g() { git "$@"; }
-function ga() { git add "$@"; }
+
+function g() { git "$*"; }
+function ga() { git add "$*"; }
 function gs() { git status; }
-function gco() { git checkout "$@"; }
-function gcm() { git commit -m "$@"; }
-function gd() { git diff "$@"; }
-function gf() { git fetch "$@"; }
+
+function gco() { git checkout "$*"; }
+function gcm() { git commit -m "$*"; }
+function gd() { git diff "$*"; }
+function gf() { git fetch "$*"; }
 function gp() { git pull; }
 function gplr() { git pull --rebase; }
-function gplo() { git pull origin "$@"; }
-function gps() { git push "$@"; }
-function gpo() { git push origin "$@"; }
+
+function gplo() { git pull origin "$*"; }
+function gps() { git push "$*"; }
+function gpo() { git push origin "$*"; }
 function gst() { git stash; }
 function gstp() { git stash pop; }
 function gstl() { git stash list; }
