@@ -1,4 +1,4 @@
-# Kubernetes Helper Functions
+# Bash-func
 
 A collection of powerful shell functions to streamline your Kubernetes workflow.
 
