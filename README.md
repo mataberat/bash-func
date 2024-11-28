@@ -13,7 +13,7 @@ A collection of powerful shell functions to streamline your Kubernetes workflow.
 ## Quick Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/yourusername/repo/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/mataberat/bash-func/refs/heads/main/install.sh | bash
 ```
 
 ## What's Included
