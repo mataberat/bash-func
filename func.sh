@@ -57,42 +57,38 @@ function dotenv-compare() {
     echo "Keys missing in $ENV_FILE_1:"
     echo "$missing_in_file_1"
 }
+# Git aliases
+alias g="git"
+alias ga="git add"
+alias gs="git status"
+alias gco="git checkout"
+alias gcommit="git commit -m"
+alias gd="git diff"
+alias gf="git fetch"
+alias gp="git pull"
+alias gplr="git pull --rebase"
+alias gplo="git pull origin"
+alias gps="git push"
+alias gpo="git push origin"
+alias gst="git stash"
+alias gstp="git stash pop"
+alias gstl="git stash list"
+alias gstc="git stash clear"
+alias gstsh="git stash show"
+alias gbd="git branch -D"
 
-# Git helper functions
-
-function g() { git "$*"; }
-function ga() { git add "$*"; }
-function gs() { git status; }
-
-function gco() { git checkout "$*"; }
-function gcm() { git commit -m "$*"; }
-function gd() { git diff "$*"; }
-function gf() { git fetch "$*"; }
-function gp() { git pull; }
-function gplr() { git pull --rebase; }
-
-function gplo() { git pull origin "$*"; }
-function gps() { git push "$*"; }
-function gpo() { git push origin "$*"; }
-function gst() { git stash; }
-function gstp() { git stash pop; }
-function gstl() { git stash list; }
-function gstc() { git stash clear; }
-function gstsh() { git stash show; }
 function git-cleanup() { git branch | grep -v "main" | grep -v "master" | xargs git branch -D; }
-function gbd() { git branch -D "$@"; }
-
-# Terraform helper functions
-function tf() { terraform "$@"; }
-function tfp() { terraform plan; }
-function tfa() { terraform apply; }
-function tfd() { terraform destroy; }
-function tfi() { terraform init; }
-function tfo() { terraform output; }
-
+# Terraform aliases
+alias tf="terraform"
+alias tfp="terraform plan"
+alias tfa="terraform apply"
+alias tfd="terraform destroy"
+alias tfi="terraform init"
+alias tfo="terraform output"
 # Configuration edit
-function configedit() { code ~/.zshrc; }
-function configssh() { code ~/.ssh/config; }
+# Configuration aliases
+alias configedit="code ~/.zshrc"
+alias configssh="code ~/.ssh/config"
 
 # Common helper functions
 function ssh-purge-known-host {
