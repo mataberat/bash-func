@@ -76,6 +76,8 @@ alias gstl="git stash list"
 alias gstc="git stash clear"
 alias gstsh="git stash show"
 alias gbd="git branch -D"
+alias gcp="git cherry-pick"
+alias gcpm1="git cherry-pick -m 1"
 
 function git-cleanup() { git branch | grep -v "main" | grep -v "master" | xargs git branch -D; }
 # Terraform aliases
@@ -104,22 +106,40 @@ function ssh-purge-known-host {
 # Kubernetes helper functions
 
 function k8s-delete-terminating-namespace() {
-    local context
+    local context namespace
     context=$(kubectl config current-context)
+    namespace=$1
+
     echo "WARNING: This action will forcefully remove all namespaces in Terminating state"
     echo "Kubernetes Context: ${context}"
-    read -r -p "Proceed with namespace cleanup? (y/N): " choice
-    case "$choice" in
-    y | Y)
-        while IFS= read -r ns; do
-            kubectl get ns "$ns" -ojson | jq '.spec.finalizers = []' | kubectl replace --raw "/api/v1/namespaces/$ns/finalize" -f -
-        done < <(kubectl get ns --field-selector status.phase=Terminating -o jsonpath='{.items[*].metadata.name}')
-        ;;
-    *)
-        echo "Operation cancelled"
-        return 1
-        ;;
-    esac
+
+    if [ -n "$namespace" ]; then
+        echo -n "Proceed with cleanup of namespace '$namespace'? (y/N): "
+        read -r choice
+        case "$choice" in
+        y | Y)
+            kubectl get ns "$namespace" -ojson | jq '.spec.finalizers = []' | kubectl replace --raw "/api/v1/namespaces/$namespace/finalize" -f -
+            ;;
+        *)
+            echo "Operation cancelled"
+            return 1
+            ;;
+        esac
+    else
+        echo -n "Proceed with cleanup of ALL terminating namespaces? (y/N): "
+        read -r choice
+        case "$choice" in
+        y | Y)
+            while IFS= read -r ns; do
+                kubectl get ns "$ns" -ojson | jq '.spec.finalizers = []' | kubectl replace --raw "/api/v1/namespaces/$ns/finalize" -f -
+            done < <(kubectl get ns --field-selector status.phase=Terminating -o jsonpath='{.items[*].metadata.name}')
+            ;;
+        *)
+            echo "Operation cancelled"
+            return 1
+            ;;
+        esac
+    fi
 }
 
 function k8s-run-alpine-pod() {
