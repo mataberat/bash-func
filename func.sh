@@ -81,13 +81,13 @@ alias gcpm1="git cherry-pick -m 1"
 
 function git-cleanup() { git branch | grep -v "main" | grep -v "master" | xargs git branch -D; }
 # Terraform aliases
-alias tf="terraform"
-alias tfp="terraform plan"
-alias tfa="terraform apply"
-alias tfd="terraform destroy"
-alias tfi="terraform init"
-alias tfo="terraform output"
-# Configuration edit
+alias t="terraform"
+alias ti="terraform init"
+alias tp="terraform plan"
+alias ta="terraform apply"
+alias td="terraform destroy"
+alias to="terraform output"
+
 # Configuration aliases
 alias configedit="code ~/.zshrc"
 alias configssh="code ~/.ssh/config"
