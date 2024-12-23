@@ -166,3 +166,9 @@ function k8s-force-delete-pod() {
 
     kubectl delete pod "$pod" -n "$namespace" --grace-period=0 --force
 }
+
+function k8s-get-secrets() {
+    local namespace="${1#namespace=}"
+    local secret="${2#secret=}"
+    kubectl -n "$namespace" get secret "$secret" -o jsonpath="{.data}" | jq 'map_values(@base64d)'
+}
