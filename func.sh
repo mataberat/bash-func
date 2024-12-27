@@ -57,6 +57,11 @@ function dotenv-compare() {
     echo "Keys missing in $ENV_FILE_1:"
     echo "$missing_in_file_1"
 }
+
+# Clean-up aliases
+alias docker-cleanup="docker system prune -a -f"
+alias awscli-cleanup="unset AWS_ACCESS_KEY_ID && unset AWS_SECRET_ACCESS_KEY && unset AWS_DEFAULT_REGION && unset AWS_REGION && unset AWS_PROFILE && unset AWS_SESSION_TOKEN"
+
 # Git aliases
 alias g="git"
 alias ga="git add"
