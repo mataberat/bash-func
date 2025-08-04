@@ -83,6 +83,8 @@ alias gstsh="git stash show"
 alias gbd="git branch -D"
 alias gcp="git cherry-pick"
 alias gcpm1="git cherry-pick -m 1"
+alias glg="git log"
+alias gm="git merge"
 
 function git-cleanup() { git branch | grep -v "main" | grep -v "master" | xargs git branch -D; }
 # Terraform aliases
@@ -94,8 +96,8 @@ alias td="terraform destroy"
 alias to="terraform output"
 
 # Configuration aliases
-alias configedit="code ~/.zshrc"
-alias configssh="code ~/.ssh/config"
+alias configedit='$GLOBAL_EDITOR ~/.zshrc'
+alias configssh='$GLOBAL_EDITOR ~/.ssh/config'
 
 # Common helper functions
 function ssh-purge-known-host {
@@ -176,4 +178,8 @@ function k8s-get-secrets() {
     local namespace="${1#namespace=}"
     local secret="${2#secret=}"
     kubectl -n "$namespace" get secret "$secret" -o jsonpath="{.data}" | jq 'map_values(@base64d)'
+}
+
+function k8s-get-all-restarted() {
+    kubectl get pods --all-namespaces | awk '$5 > 0'
 }
